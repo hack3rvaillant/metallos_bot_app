@@ -25,7 +25,7 @@ jobs:
     env:
       RAILS_ENV: test
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
-      RAILS_MASTER_KEY: ${{ vars.RAILS_MASTER_KEY }}
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -36,7 +36,7 @@ jobs:
           bundler-cache: true
       # Add or replace database setup steps here
       - name: Set up database schema
-        run: echo $RAILS_MASTER_KEY #bin/rails db:schema:load
+        run: bin/rails db:schema:load
       # Add or replace test runners here
       - name: Run tests
         run: bundle exec rspec
