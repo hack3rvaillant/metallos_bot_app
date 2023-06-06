@@ -6,7 +6,7 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups(
   assets: %i[development test],
-  pry:    %i[development test],
+  pry: %i[development test]
 ))
 # load pry for production console
 Bundler.require(:pry) if defined?(Rails::Console)
