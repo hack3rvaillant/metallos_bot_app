@@ -50,13 +50,13 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 
 gem "telegram-bot", "~> 0.15.5"
 
-group :pry do
-  gem "awesome_print"
-  gem "pry"
-  gem "pry-byebug"
-  gem "pry-doc"
-  gem "pry-rails"
-end
+  # group :pry do
+  #   gem "awesome_print"
+  #   gem "pry"
+  #   gem "pry-byebug"
+  #   gem "pry-doc"
+  #   gem "pry-rails"
+  # end
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
