@@ -37,3 +37,5 @@
 spec/examples.txt
 config/secrets.yml
 .DS_Store
+
+/config/credentials/*.key
