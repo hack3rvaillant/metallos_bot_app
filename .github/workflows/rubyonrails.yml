@@ -25,6 +25,7 @@ jobs:
     env:
       RAILS_ENV: test
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+      RAILS_MASTER_KEY: f261f1dc0605ca84d994e4f87bfad574
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -34,8 +35,6 @@ jobs:
         with:
           bundler-cache: true
       # Add or replace database setup steps here
-      - name: Puts masterkey
-        run: echo $RAILS_MASTER_KEY
       - name: Set up database schema
         run: bin/rails db:schema:load
       # Add or replace test runners here
