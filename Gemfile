@@ -87,6 +87,9 @@ group :test do
   gem "rspec-rails"
   gem "rspec-its"
   gem 'shoulda-matchers', '~> 5.0'
+  gem "factory_bot", "~> 6.2"
 end
 
 gem "devise", "~> 4.9"
+gem 'devise-tailwinded'
+
