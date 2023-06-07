@@ -9,6 +9,10 @@
 #  updated_at  :datetime         not null
 #
 class Artist < ApplicationRecord
+  # Validations
   validates :name, presence: true
   validates :description, presence: true
+
+  # Associations
+  has_many :protocols, dependent: :destroy
 end

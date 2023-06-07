@@ -12,3 +12,6 @@ en:
       participation_types:
         solo: "solo"
         multi: "multi"
+      places:
+        online: "online"
+        onsite: "onsite"

@@ -36,7 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_135425) do
     t.text "content"
     t.datetime "start_at", precision: nil
     t.datetime "end_at", precision: nil
-    t.string "status"
+    t.string "status", default: "draft"
     t.string "temporality"
     t.string "place"
     t.string "address_of_event"
@@ -46,8 +46,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_135425) do
     t.integer "duration_in_minutes"
     t.integer "artist_id", null: false
     t.integer "org_id", null: false
-    t.boolean "copyright_cleared"
-    t.boolean "bot_visible"
+    t.boolean "copyright_cleared", default: false
+    t.boolean "bot_visible", default: false
     t.text "bot_intro"
     t.text "bot_steps"
     t.text "props_needed"

@@ -8,9 +8,9 @@
 #  bot_intro                 :text
 #  bot_outro                 :text
 #  bot_steps                 :text
-#  bot_visible               :boolean
+#  bot_visible               :boolean          default(FALSE)
 #  content                   :text
-#  copyright_cleared         :boolean
+#  copyright_cleared         :boolean          default(FALSE)
 #  datetime_of_event         :datetime
 #  duration_in_minutes       :integer
 #  end_at                    :datetime
@@ -18,7 +18,7 @@
 #  place                     :string
 #  props_needed              :text
 #  start_at                  :datetime
-#  status                    :string
+#  status                    :string           default("draft")
 #  telegram_conversation_url :string
 #  temporality               :string
 #  title                     :string
@@ -42,18 +42,31 @@ class Protocol < ApplicationRecord
   STATUSES = I18n.t("models.protocol.statuses", locale: :en)
   TEMPORALITIES = I18n.t("models.protocol.temporalities", locale: :en)
   PARTICIPATION_TYPES = I18n.t("models.protocol.participation_types", locale: :en)
+  PLACES = I18n.t("models.protocol.places", locale: :en)
 
   # Validations
   validates :title, presence: true
   validates :content, presence: true
   validates :start_at, presence: true
   validates :end_at, presence: true
+  validates :place, presence: true
+  validates :address_of_event, presence: true, if: :onsite_event?
+  validates :datetime_of_event, presence: true, if: :onsite_event?
   validates :status, presence: true
+  validates :copyright_cleared, inclusion: {in: [true, false]}
   validates :status, inclusion: STATUSES.values
   validates :temporality, presence: true
   validates :temporality, inclusion: TEMPORALITIES.values
-  validates :url_of_event, presence: true
+  validates :participation_type, presence: true
+  validates :participation_type, inclusion: PARTICIPATION_TYPES.values
+  validates :url_of_event, presence: true, if: :online_event?
   validates :duration_in_minutes, presence: true
+  validates :bot_visible, inclusion: {in: [true, false]}
+  validates :bot_cta, presence: true, if: :bot_visible?
+  validates :bot_outro, presence: true, if: :bot_visible?
+  validates :telegram_conversation_url, presence: true, if: :bot_visible?
+  validates :bot_steps, presence: true, if: :bot_visible?
+  validates :bot_intro, presence: true, if: :bot_visible?
 
   # Associations
   belongs_to :artist
@@ -62,4 +75,15 @@ class Protocol < ApplicationRecord
   enum :status, STATUSES
   enum :temporality, TEMPORALITIES
   enum :participation_type, PARTICIPATION_TYPES
+  enum :place, PLACES
+
+  private
+
+  def online_event?
+    place == "online"
+  end
+
+  def onsite_event?
+    place == "onsite"
+  end
 end
