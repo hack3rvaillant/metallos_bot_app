@@ -38,7 +38,7 @@
 #  artist_id  (artist_id => artists.id)
 #  org_id     (org_id => orgs.id)
 #
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Protocol, type: :model do
   describe "Validations" do
@@ -52,44 +52,43 @@ RSpec.describe Protocol, type: :model do
 
     it do
       should define_enum_for(:status)
-      .with_values(described_class::STATUSES)
-      .backed_by_column_of_type(:string)
+        .with_values(described_class::STATUSES)
+        .backed_by_column_of_type(:string)
     end
 
     it { should validate_presence_of(:temporality) }
 
     it do
       should define_enum_for(:temporality)
-      .with_values(described_class::TEMPORALITIES)
-      .backed_by_column_of_type(:string)
+        .with_values(described_class::TEMPORALITIES)
+        .backed_by_column_of_type(:string)
     end
 
     it { should validate_presence_of(:participation_type) }
 
     it do
       should define_enum_for(:participation_type)
-      .with_values(described_class::PARTICIPATION_TYPES)
-      .backed_by_column_of_type(:string)
+        .with_values(described_class::PARTICIPATION_TYPES)
+        .backed_by_column_of_type(:string)
     end
 
     it { should validate_presence_of(:place) }
 
     it do
       should define_enum_for(:place)
-      .with_values(described_class::PLACES)
-      .backed_by_column_of_type(:string)
+        .with_values(described_class::PLACES)
+        .backed_by_column_of_type(:string)
     end
 
-    context 'when event is online' do
+    context "when event is online" do
       subject(:subject) { build(:protocol, place: :online) }
 
       it { should validate_presence_of(:url_of_event) }
       it { should_not validate_presence_of(:address_of_event) }
       it { should_not validate_presence_of(:datetime_of_event) }
-
     end
 
-    context 'when event is onsite' do
+    context "when event is onsite" do
       subject(:subject) { build(:protocol, place: :onsite) }
 
       it { should validate_presence_of(:address_of_event) }
@@ -126,7 +125,6 @@ RSpec.describe Protocol, type: :model do
     it { should belong_to(:artist) }
     it { should belong_to(:org) }
   end
-
 
   describe "Factory" do
     subject { build(:protocol) }

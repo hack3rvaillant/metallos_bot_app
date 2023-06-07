@@ -8,7 +8,7 @@ FactoryBot.define do
     end_at { "2023-06-07 15:54:25" }
     status { I18n.t("models.protocol.statuses", locale: :en).values.sample }
     temporality { I18n.t("models.protocol.temporalities", locale: :en).values.sample }
-    place { I18n.t("models.protocol.places", locale: :en).values.sample}
+    place { I18n.t("models.protocol.places", locale: :en).values.sample }
     address_of_event { "MyString" }
     datetime_of_event { "2023-06-07 15:54:25" }
     url_of_event { "MyString" }

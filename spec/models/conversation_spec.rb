@@ -8,7 +8,7 @@
 #  updated_at :datetime         not null
 #  chat_id    :string
 #
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Conversation, type: :model do
   describe "Validations" do
