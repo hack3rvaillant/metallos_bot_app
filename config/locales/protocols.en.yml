@@ -1,0 +1,14 @@
+en:
+  models:
+    protocol:
+      statuses:
+        draft: "draft"
+        ready_to_publish: "ready_to_publish"
+        next_batch: "next_batch"
+        published: "published"
+      temporalities:
+        sync: "sync"
+        async: "async"
+      participation_types:
+        solo: "solo"
+        multi: "multi"

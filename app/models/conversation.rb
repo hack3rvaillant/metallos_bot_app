@@ -1,16 +1,14 @@
 # == Schema Information
 #
-# Table name: orgs
+# Table name: conversations
 #
 #  id         :integer          not null, primary key
-#  name       :string
+#  ended_at   :datetime
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  chat_id    :string
 #
-class Org < ApplicationRecord
+class Conversation < ApplicationRecord
   # Validations
-  validates :name, presence: true
-
-  # Associations
-  has_many :users, dependent: :destroy
+  validates :chat_id, presence: true
 end
