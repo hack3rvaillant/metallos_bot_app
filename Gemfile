@@ -55,7 +55,6 @@ gem "telegram-bot", "~> 0.15.5"
 # group :pry do
 #   gem "awesome_print"
 #   gem "pry"
-#   gem "pry-byebug"
 #   gem "pry-doc"
 #   gem "pry-rails"
 # end
@@ -64,6 +63,7 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "standardrb"
+  gem "pry-byebug"
 end
 
 group :development do
@@ -86,4 +86,7 @@ group :test do
 
   gem "rspec-rails"
   gem "rspec-its"
+  gem 'shoulda-matchers', '~> 5.0'
 end
+
+gem "devise", "~> 4.9"
