@@ -94,3 +94,5 @@ end
 
 gem "devise", "~> 4.9"
 gem "devise-tailwinded"
+
+gem "avo", "~> 2.18"
