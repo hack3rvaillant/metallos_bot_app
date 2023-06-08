@@ -30,7 +30,7 @@ Avo.configure do |config|
   #   create: 'create?',
   #   destroy: 'destroy?',
   # }
-  # config.raise_error_on_missing_policy = false
+  config.raise_error_on_missing_policy = true
   # config.authorization_client = :pundit
 
   ## == Localization ==

@@ -2,7 +2,7 @@
 #
 # Table name: users
 #
-#  id                     :integer          not null, primary key
+#  id                     :bigint           not null, primary key
 #  confirmation_sent_at   :datetime
 #  confirmation_token     :string
 #  confirmed_at           :datetime
@@ -22,7 +22,7 @@
 #  unlock_token           :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  org_id                 :integer          not null
+#  org_id                 :bigint           not null
 #
 # Indexes
 #
@@ -32,7 +32,7 @@
 #
 # Foreign Keys
 #
-#  org_id  (org_id => orgs.id)
+#  fk_rails_...  (org_id => orgs.id)
 #
 require "rails_helper"
 
@@ -43,5 +43,11 @@ RSpec.describe User, type: :model do
 
   describe "Associations" do
     it { should belong_to(:org) }
+  end
+
+  describe "Factory" do
+    it "is valid" do
+      expect(build(:user)).to be_valid
+    end
   end
 end

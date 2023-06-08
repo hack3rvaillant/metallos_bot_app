@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  mount Avo::Engine, at: Avo.configuration.root_path
+  authenticate :user do
+    mount Avo::Engine, at: Avo.configuration.root_path
+  end
+
   devise_for :users
   devise_scope :user do
     get "connexion", to: "devise/sessions#new"

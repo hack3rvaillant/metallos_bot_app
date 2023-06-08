@@ -2,7 +2,7 @@
 #
 # Table name: users
 #
-#  id                     :integer          not null, primary key
+#  id                     :bigint           not null, primary key
 #  confirmation_sent_at   :datetime
 #  confirmation_token     :string
 #  confirmed_at           :datetime
@@ -22,7 +22,7 @@
 #  unlock_token           :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  org_id                 :integer          not null
+#  org_id                 :bigint           not null
 #
 # Indexes
 #
@@ -32,9 +32,12 @@
 #
 # Foreign Keys
 #
-#  org_id  (org_id => orgs.id)
+#  fk_rails_...  (org_id => orgs.id)
 #
 class User < ApplicationRecord
+  ADMIN_EMAILS = %w[
+      hello@hacker-vaillant.org
+    ]
   # Include default devise modules. Others available are:
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :validatable,
@@ -44,5 +47,9 @@ class User < ApplicationRecord
   validates :email, presence: true
 
   # Associations
-  belongs_to :org, dependent: :destroy
+  belongs_to :org
+
+  def admin?
+    ADMIN_EMAILS.include?(email)
+  end
 end

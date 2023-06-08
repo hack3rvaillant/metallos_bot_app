@@ -185,6 +185,10 @@ GEM
     public_suffix (5.0.1)
     puma (5.6.4)
       nio4r (~> 2.0)
+    pundit (2.3.0)
+      activesupport (>= 3.0.0)
+    pundit-matchers (2.3.0)
+      rspec-rails (>= 3.0.0)
     racc (1.6.0)
     rack (2.2.3.1)
     rack-test (1.1.0)
@@ -335,6 +339,8 @@ DEPENDENCIES
   pg
   pry-byebug
   puma (~> 5.6)
+  pundit (~> 2.3)
+  pundit-matchers (~> 2.3.0)
   rails (~> 7.0.2, >= 7.0.2.3)
   rspec-its
   rspec-rails

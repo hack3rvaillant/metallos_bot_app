@@ -11,6 +11,9 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2023_06_07_135425) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "artists", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -44,8 +47,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_135425) do
     t.string "url_of_event"
     t.string "participation_type"
     t.integer "duration_in_minutes"
-    t.integer "artist_id", null: false
-    t.integer "org_id", null: false
+    t.bigint "artist_id", null: false
+    t.bigint "org_id", null: false
     t.boolean "copyright_cleared", default: false
     t.boolean "bot_visible", default: false
     t.text "bot_intro"
@@ -80,7 +83,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_135425) do
     t.datetime "locked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "org_id", null: false
+    t.bigint "org_id", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["org_id"], name: "index_users_on_org_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

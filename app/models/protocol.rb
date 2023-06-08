@@ -2,7 +2,7 @@
 #
 # Table name: protocols
 #
-#  id                        :integer          not null, primary key
+#  id                        :bigint           not null, primary key
 #  address_of_event          :string
 #  bot_cta                   :string
 #  bot_intro                 :text
@@ -25,8 +25,8 @@
 #  url_of_event              :string
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
-#  artist_id                 :integer          not null
-#  org_id                    :integer          not null
+#  artist_id                 :bigint           not null
+#  org_id                    :bigint           not null
 #
 # Indexes
 #
@@ -35,8 +35,8 @@
 #
 # Foreign Keys
 #
-#  artist_id  (artist_id => artists.id)
-#  org_id     (org_id => orgs.id)
+#  fk_rails_...  (artist_id => artists.id)
+#  fk_rails_...  (org_id => orgs.id)
 #
 class Protocol < ApplicationRecord
   STATUSES = I18n.t("models.protocol.statuses", locale: :en)
