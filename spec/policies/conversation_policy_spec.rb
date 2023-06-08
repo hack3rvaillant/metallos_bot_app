@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe ConversationPolicy, type: :policy do
   let(:object) { create(:conversation) }
@@ -12,7 +12,7 @@ RSpec.describe ConversationPolicy, type: :policy do
   context "when user is admin" do
     let(:user) { build(:user, :admin) }
 
-    it 'includes object and object_from_other_org in resolved scope' do
+    it "includes object and object_from_other_org in resolved scope" do
       expect(resolved_scope).to include(object)
     end
 
@@ -22,7 +22,7 @@ RSpec.describe ConversationPolicy, type: :policy do
   context "when user is not admin" do
     let(:user) { build(:user) }
 
-    it 'includes object in resolved scope' do
+    it "includes object in resolved scope" do
       expect(resolved_scope).to include(object)
     end
 

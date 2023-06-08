@@ -90,7 +90,7 @@ group :test do
   gem "rspec-rails"
   gem "rspec-its"
   gem "shoulda-matchers", "~> 5.0"
-  gem 'pundit-matchers', '~> 2.3.0'
+  gem "pundit-matchers", "~> 2.3.0"
 end
 
 gem "devise", "~> 4.9"
@@ -99,4 +99,3 @@ gem "devise-tailwinded"
 gem "avo", "~> 2.18"
 
 gem "pundit", "~> 2.3"
-

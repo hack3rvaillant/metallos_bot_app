@@ -36,8 +36,8 @@
 #
 class User < ApplicationRecord
   ADMIN_EMAILS = %w[
-      hello@hacker-vaillant.org
-    ]
+    hello@hacker-vaillant.org
+  ]
   # Include default devise modules. Others available are:
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :validatable,

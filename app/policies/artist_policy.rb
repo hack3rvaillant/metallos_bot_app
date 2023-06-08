@@ -1,7 +1,7 @@
 class ArtistPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      return scope.all
+      scope.all
     end
   end
 
