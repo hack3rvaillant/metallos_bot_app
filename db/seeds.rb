@@ -8,8 +8,9 @@
 Org.destroy_all
 Artist.destroy_all
 
-org = Org.create(name: "Maison des Métallos")
-admin = org.users.create(email: "e.louisygabriel@gmail.com", password: "mmoxara24o86")
+org = Org.create!(name: "Maison des Métallos")
+Org.create!(name: "Maison des Métallos2")
+admin = org.users.create!(email: "hello@hacker-vaillant.org", password: "mmoxara24o86")
 admin.confirm
 
 artist = Artist.create!(name: "Delphine Perret", description: "Diplômée de l’école Supérieure des Arts Décoratifs de Strasbourg en 2003, Delphine Perret est autrice et dessinatrice et travaille principalement pour l’édition jeunesse : elle a écrit et illustré une quarantaine de livres aux éditions Les Fourmis Rouges, Thierry Magnier, l’Atelier du Poisson Soluble, Le Rouergue et Gallimard jeunesse. Pour la Revue véhicule, elle a rédigé une dizaine de protocoles.")

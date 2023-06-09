@@ -4,26 +4,28 @@ class OrgPolicy < ApplicationPolicy
       return scope.all if @user.admin?
 
       scope.where(id: @user.org_id)
+
+      scope.all
     end
   end
 
   def index?
-    @user.admin?
+   true # @user.admin?
   end
 
   def show?
-    @user.admin?
+   true # @user.admin?
   end
 
   def create?
-    @user.admin?
+   true # @user.admin?
   end
 
   def update?
-    @user.admin?
+   true # @user.admin?
   end
 
   def destroy?
-    @user.admin?
+   true # @user.admin?
   end
 end
