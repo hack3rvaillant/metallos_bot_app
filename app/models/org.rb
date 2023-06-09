@@ -13,4 +13,6 @@ class Org < ApplicationRecord
 
   # Associations
   has_many :users, dependent: :destroy
+  has_many :protocols, dependent: :destroy
+  has_one :active_protocol, -> { active }, class_name: "Protocol"
 end

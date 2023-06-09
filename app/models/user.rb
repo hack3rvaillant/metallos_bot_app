@@ -37,6 +37,8 @@
 class User < ApplicationRecord
   ADMIN_EMAILS = %w[
     hello@hacker-vaillant.org
+    kevin.echraghi@heretique.fr
+    ferdinand.barbier@laposte.net
   ]
   # Include default devise modules. Others available are:
   devise :database_authenticatable, :registerable,

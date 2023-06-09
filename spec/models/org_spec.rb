@@ -16,5 +16,18 @@ RSpec.describe Org, type: :model do
 
   describe "Associations" do
     it { should have_many(:users) }
+    it { should have_many(:protocols) }
+    it { should have_one(:active_protocol) }
+
+    describe "active_protocol" do
+      let(:org) { create(:org) }
+      let!(:active_protocol) { create(:protocol, org: org, start_at: 2.days.ago, end_at: 2.days.from_now) }
+      let!(:past_protocol) { create(:protocol, org: org, start_at: 6.days.ago, end_at: 5.days.ago) }
+      let!(:future_protocol) { create(:protocol, org: org, start_at: 3.days.from_now, end_at: 4.days.from_now) }
+
+      it "returns only the active protocol" do
+        expect(org.active_protocol).to eq active_protocol
+      end
+    end
   end
 end

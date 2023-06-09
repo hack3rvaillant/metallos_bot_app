@@ -41,6 +41,14 @@
 require "rails_helper"
 
 RSpec.describe Protocol, type: :model do
+  describe "Factory" do
+    subject { build(:protocol) }
+
+    it "is valid" do
+      expect(subject).to be_valid
+    end
+  end
+
   describe "Validations" do
     subject { build(:protocol) }
 
@@ -117,18 +125,59 @@ RSpec.describe Protocol, type: :model do
       it { should_not validate_presence_of(:bot_cta) } # if bot_visible
       it { should_not validate_presence_of(:telegram_conversation_url) } # if bot_visible
     end
+
+    describe "Only one active protocol at a time" do
+      let(:protocol) { build(:protocol) }
+      subject { protocol.valid? }
+
+      context "when there is a protocol overlap" do
+        let(:protocol) { build(:protocol, start_at: 3.days.from_now, end_at: 5.days.from_now) }
+
+        context "when the protocol ends during another protocol" do
+          let!(:existing_protocol) { create(:protocol, start_at: 4.days.from_now, end_at: 6.days.from_now) }
+
+          it "the protocol is invalid" do
+            expect(subject).to be false
+          end
+        end
+
+        context "when the protocol start during another protocol" do
+          let!(:existing_protocol) { create(:protocol, start_at: 2.days.from_now, end_at: 4.days.from_now) }
+
+          it "the protocol is invalid" do
+            expect(subject).to be false
+          end
+        end
+
+        context "when the protocol start and ends during another protocol" do
+          let!(:existing_protocol) { create(:protocol, start_at: 2.days.from_now, end_at: 6.days.from_now) }
+
+          it "the protocol is invalid" do
+            expect(subject).to be false
+          end
+        end
+      end
+
+      context "when there is no protocol overlap" do
+        context "when protocol is happening before existing protocol" do
+          let!(:existing_protocol) { create(:protocol, start_at: 8.days.from_now, end_at: 10.days.from_now) }
+          it "is valid" do
+            expect(subject).to be true
+          end
+        end
+
+        context "when protocol is happening after existing protocol" do
+          let!(:existing_protocol) { create(:protocol, start_at: 1.days.from_now, end_at: 2.days.from_now) }
+          it "is valid" do
+              expect(subject).to be true
+          end
+        end
+      end
+    end
   end
 
   context "Associations" do
     it { should belong_to(:artist) }
     it { should belong_to(:org) }
-  end
-
-  describe "Factory" do
-    subject { build(:protocol) }
-
-    it "is valid" do
-      expect(subject).to be_valid
-    end
   end
 end

@@ -67,6 +67,7 @@ class Protocol < ApplicationRecord
   validates :telegram_conversation_url, presence: true, if: :bot_visible?
   validates :bot_steps, presence: true, if: :bot_visible?
   validates :bot_intro, presence: true, if: :bot_visible?
+  validate :not_overlapping
 
   # Associations
   belongs_to :artist
@@ -77,6 +78,14 @@ class Protocol < ApplicationRecord
   enum :participation_type, PARTICIPATION_TYPES
   enum :place, PLACES
 
+  # Scopes
+
+  scope :start_overlaps, -> (protocol) { excluding(protocol).where("start_at BETWEEN ? AND ?", protocol.start_at, protocol.end_at) }
+  scope :end_overlaps, -> (protocol) { excluding(protocol).where("end_at BETWEEN ? AND ?", protocol.start_at, protocol.end_at) }
+  scope :covering_overlaps, -> (protocol) { excluding(protocol).where("start_at <= ? AND end_at >= ?", protocol.start_at, protocol.end_at) }
+  scope :inclusive_overlaps, -> (protocol) { excluding(protocol).where("start_at >= ? AND end_at <= ?", protocol.start_at, protocol.end_at) }
+  scope :active, -> { where("? BETWEEN start_at AND end_AT", Time.current).limit(1) }
+
   private
 
   def online_event?
@@ -85,5 +94,11 @@ class Protocol < ApplicationRecord
 
   def onsite_event?
     place == "onsite"
+  end
+
+  def not_overlapping
+    errors.add(:start_at, :overlapping_dates) if self.class.start_overlaps(self).any?
+    errors.add(:end_at, :overlapping_dates) if self.class.end_overlaps(self).any?
+    errors.add(:end_at, :overlapping_dates) if self.class.covering_overlaps(self).any?
   end
 end
