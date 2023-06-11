@@ -1,4 +1,4 @@
-en:
+fr:
   models:
     protocol:
       statuses:
@@ -6,9 +6,9 @@ en:
         ready_to_review: "ready_to_review"
         published: "published"
       participation_modes:
-        solo: "solo"
-        multi: "multi"
+        solo: "seul"
+        multi: "à plusieurs"
       durations:
-        a_few_minutes: "a_few_minutes"
-        a_few_hours: "a_few_hours"
-        a_few_days: "a_few_days"
+        a_few_minutes: "Quelques minutes"
+        a_few_hours: "Quelques heures"
+        a_few_days: "Quelques jours"

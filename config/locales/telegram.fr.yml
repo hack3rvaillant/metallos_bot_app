@@ -74,3 +74,9 @@ fr:
       nothing: Nothing to remind
     start:
       content: Hi there!
+      greetings: Bienvenue au bureau des Méthodes
+      what_we_do: "Nous publions environ chaque semaine un protocole proposé par un artiste."
+      your_turn: "Votre rôle est le suivant :"
+      current_protocol: "Un protocole est actuellement en cours"
+      no_current_protocol: ""
+      join_group_chat: "Rejoignez la conversation %{url}"

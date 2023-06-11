@@ -2,31 +2,22 @@
 #
 # Table name: protocols
 #
-#  id                        :bigint           not null, primary key
-#  address_of_event          :string
-#  bot_cta                   :string
-#  bot_intro                 :text
-#  bot_outro                 :text
-#  bot_steps                 :text
-#  bot_visible               :boolean          default(FALSE)
-#  content                   :text
-#  copyright_cleared         :boolean          default(FALSE)
-#  datetime_of_event         :datetime
-#  duration_in_minutes       :integer
-#  end_at                    :datetime
-#  participation_type        :string
-#  place                     :string
-#  props_needed              :text
-#  start_at                  :datetime
-#  status                    :string           default("draft")
-#  telegram_conversation_url :string
-#  temporality               :string
-#  title                     :string
-#  url_of_event              :string
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
-#  artist_id                 :bigint           not null
-#  org_id                    :bigint           not null
+#  id                 :bigint           not null, primary key
+#  about              :text
+#  content            :text
+#  copyright_cleared  :boolean          default(FALSE)
+#  creation_year      :integer
+#  duration           :string
+#  internal_notes     :text
+#  official_title     :string
+#  participation_mode :string
+#  props_needed       :text
+#  punchline          :string
+#  status             :string           default("draft")
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  artist_id          :bigint           not null
+#  org_id             :bigint           not null
 #
 # Indexes
 #
@@ -40,51 +31,33 @@
 #
 class Protocol < ApplicationRecord
   STATUSES = I18n.t("models.protocol.statuses", locale: :en)
-  TEMPORALITIES = I18n.t("models.protocol.temporalities", locale: :en)
-  PARTICIPATION_TYPES = I18n.t("models.protocol.participation_types", locale: :en)
-  PLACES = I18n.t("models.protocol.places", locale: :en)
+  PARTICIPATION_MODES = I18n.t("models.protocol.participation_modes", locale: :en)
+  DURATIONS = I18n.t("models.protocol.durations", locale: :en)
 
   # Validations
-  validates :title, presence: true
+  validates :punchline, presence: true
   validates :content, presence: true
-  validates :start_at, presence: true
-  validates :end_at, presence: true
-  validates :place, presence: true
-  validates :address_of_event, presence: true, if: :onsite_event?
-  validates :datetime_of_event, presence: true, if: :onsite_event?
   validates :status, presence: true
   validates :copyright_cleared, inclusion: {in: [true, false]}
   validates :status, inclusion: STATUSES.values
-  validates :temporality, presence: true
-  validates :temporality, inclusion: TEMPORALITIES.values
-  validates :participation_type, presence: true
-  validates :participation_type, inclusion: PARTICIPATION_TYPES.values
-  validates :url_of_event, presence: true, if: :online_event?
-  validates :duration_in_minutes, presence: true
-  validates :bot_visible, inclusion: {in: [true, false]}
-  validates :bot_cta, presence: true, if: :bot_visible?
-  validates :bot_outro, presence: true, if: :bot_visible?
-  validates :telegram_conversation_url, presence: true, if: :bot_visible?
-  validates :bot_steps, presence: true, if: :bot_visible?
-  validates :bot_intro, presence: true, if: :bot_visible?
-  validate :not_overlapping
+  validates :participation_mode, presence: true
+  validates :participation_mode, inclusion: PARTICIPATION_MODES.values
+  validates :duration, inclusion: { in: DURATIONS.values, allow_blank: true }
+  validate :publish_only_cleared
 
   # Associations
   belongs_to :artist
   belongs_to :org
 
-  enum :status, STATUSES
-  enum :temporality, TEMPORALITIES
-  enum :participation_type, PARTICIPATION_TYPES
-  enum :place, PLACES
+  has_many :events, dependent: :destroy
+  has_many :bot_broadcasts, dependent: :destroy
 
-  # Scopes
+  accepts_nested_attributes_for :events
+  accepts_nested_attributes_for :bot_broadcasts
 
-  scope :start_overlaps, -> (protocol) { excluding(protocol).where("start_at BETWEEN ? AND ?", protocol.start_at, protocol.end_at) }
-  scope :end_overlaps, -> (protocol) { excluding(protocol).where("end_at BETWEEN ? AND ?", protocol.start_at, protocol.end_at) }
-  scope :covering_overlaps, -> (protocol) { excluding(protocol).where("start_at <= ? AND end_at >= ?", protocol.start_at, protocol.end_at) }
-  scope :inclusive_overlaps, -> (protocol) { excluding(protocol).where("start_at >= ? AND end_at <= ?", protocol.start_at, protocol.end_at) }
-  scope :active, -> { where("? BETWEEN start_at AND end_AT", Time.current).limit(1) }
+  enum :status, {"draft": "draft", "ready_to_review": "ready_to_review", "published": "published"}
+  enum :participation_mode, PARTICIPATION_MODES
+  enum :duration, DURATIONS
 
   private
 
@@ -96,9 +69,15 @@ class Protocol < ApplicationRecord
     place == "onsite"
   end
 
-  def not_overlapping
-    errors.add(:start_at, :overlapping_dates) if self.class.start_overlaps(self).any?
-    errors.add(:end_at, :overlapping_dates) if self.class.end_overlaps(self).any?
-    errors.add(:end_at, :overlapping_dates) if self.class.covering_overlaps(self).any?
+  def publish_only_cleared
+    return if copyright_cleared
+
+    return if !published?
+
+    errors.add(:status, :must_be_cleard) if status == :published && !cleared
+  end
+
+  def published?
+    status == "published"
   end
 end

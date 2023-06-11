@@ -48,10 +48,17 @@ gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 # Use Sass to process CSS
 # gem "sassc-rails"
 
+# Active Storage makes it simple to upload and reference files
+gem "activestorage"
+
+# High-level image processing wrapper for libvips and ImageMagick/GraphicsMagick
+gem "image_processing"
+
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
 gem "telegram-bot", "~> 0.15.5"
+gem "sanitize"
 
 # group :pry do
 #   gem "awesome_print"

@@ -1,0 +1,6 @@
+fr:
+  models:
+    event:
+      places:
+        online: "En Ligne"
+        irl: "Sur place"

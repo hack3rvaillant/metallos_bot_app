@@ -85,9 +85,13 @@ en:
     resource_destroyed: Record destroyed
     resource_translations:
       user:
-        one: user
-        other: users
-        zero: users
+        one: utilisateurs
+        other: utilisateurs
+        zero: utilisateur
+      protocol:
+        one: protocole
+        other: protocoles
+        zero: protocole
     resource_updated: Record updated
     resources: Resources
     run: Run

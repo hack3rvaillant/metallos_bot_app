@@ -1,0 +1,6 @@
+en:
+  models:
+    event:
+      places:
+        online: "online"
+        irl: "irl"

@@ -88,6 +88,10 @@ fr:
         one: utilisateurs
         other: utilisateurs
         zero: utilisateur
+      protocol:
+        one: protocole
+        other: protocoles
+        zero: protocole
     resource_updated: Ressource mise à jour
     resources: Ressources
     run: Exécuter

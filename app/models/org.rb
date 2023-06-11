@@ -14,5 +14,9 @@ class Org < ApplicationRecord
   # Associations
   has_many :users, dependent: :destroy
   has_many :protocols, dependent: :destroy
-  has_one :active_protocol, -> { active }, class_name: "Protocol"
+  has_many :bot_broadcasts, through: :protocols
+
+  def active_bot_broadcast
+    BotBroadcast.joins(:protocol).where("protocols.org_id = ?", id).first
+  end
 end

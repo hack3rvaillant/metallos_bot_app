@@ -2,67 +2,72 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
   include Telegram::Bot::UpdatesController::MessageContext
 
   def start!(*)
-    respond_with :message, text: "Bienvenue au Bureau des Méthodes, \n" \
-    "Nous publions environ chaque semaine un protocole proposé \n" \
-    "par un artiste. Votre rôle est le suivant :"
-    respond_with :photo, photo: File.open(Rails.root.join("app/assets/images/steps.png"))
-    save_context :stop!
-    respond_with :message, text: "Un protocole est actuellement en cours", reply_markup: {
-      inline_keyboard: [[
-        {text: "Voir le protocole en cours", url: "https://core.telegram.org/bots#build-social-networks"}
-      ]]
-    }
+    active_bot_broadcast = Org.find_by(name: "Maison des Métallos").active_bot_broadcast # TODO, make the org selection dynamic
+    respond_with :message, text: t(".greetings")
+    respond_with :message, text: t(".what_we_do")
+    if active_bot_broadcast
+      respond_with :message, text: t(".current_protocol")
+      respond_with :message, text: t(".your_turn")
+      respond_with :message, text: Sanitize.fragment(active_bot_broadcast.intro), parse_mode: "HTML"
+      active_bot_broadcast.thumbnail.open do |file|
+        respond_with :photo, photo: file
+      end
+      respond_with :message, text: Sanitize.fragment(active_bot_broadcast.steps), parse_mode: "HTML"
+      respond_with :message, text: Sanitize.fragment(active_bot_broadcast.outro), parse_mode: "HTML"
+      respond_with :message, text: t(".join_group_chat", url: active_bot_broadcast.telegram_conversation_url)
+    else
+    end
   end
 
   def stop!
     bot.close
   end
 
-  def help!(*)
-    respond_with :message, text: t(".content")
-  end
+  # def help!(*)
+  #   respond_with :message, text: t(".content")
+  # end
 
-  def memo!(*args)
-    if args.any?
-      session[:memo] = args.join(" ")
-      respond_with :message, text: t(".notice")
-    else
-      respond_with :message, text: t(".prompt")
-      save_context :memo!
-    end
-  end
+  # def memo!(*args)
+  #   if args.any?
+  #     session[:memo] = args.join(" ")
+  #     respond_with :message, text: t(".notice")
+  #   else
+  #     respond_with :message, text: t(".prompt")
+  #     save_context :memo!
+  #   end
+  # end
 
-  def remind_me!(*)
-    to_remind = session.delete(:memo)
-    reply = to_remind || t(".nothing")
-    respond_with :message, text: reply
-  end
+  # def remind_me!(*)
+  #   to_remind = session.delete(:memo)
+  #   reply = to_remind || t(".nothing")
+  #   respond_with :message, text: reply
+  # end
 
-  def keyboard!(value = nil, *)
-    if value
-      respond_with :message, text: t(".selected", value: value)
-    else
-      save_context :keyboard!
-      respond_with :message, text: t(".prompt"), reply_markup: {
-        keyboard: [t(".buttons")],
-        resize_keyboard: true,
-        one_time_keyboard: true,
-        selective: true
-      }
-    end
-  end
+  # def keyboard!(value = nil, *)
+  #   if value
+  #     respond_with :message, text: t(".selected", value: value)
+  #   else
+  #     save_context :keyboard!
+  #     respond_with :message, text: t(".prompt"), reply_markup: {
+  #       keyboard: [t(".buttons")],
+  #       resize_keyboard: true,
+  #       one_time_keyboard: true,
+  #       selective: true
+  #     }
+  #   end
+  # end
 
-  def inline_keyboard!(*)
-    respond_with :message, text: t(".prompt"), reply_markup: {
-      inline_keyboard: [
-        [
-          {text: t(".alert"), callback_data: "alert"},
-          {text: t(".no_alert"), callback_data: "no_alert"},
-          {text: t(".repo"), url: "https://github.com/telegram-bot-rb/telegram-bot"}
-        ]
-      ]
-    }
-  end
+  # def inline_keyboard!(*)
+  #   respond_with :message, text: t(".prompt"), reply_markup: {
+  #     inline_keyboard: [
+  #       [
+  #         {text: t(".alert"), callback_data: "alert"},
+  #         {text: t(".no_alert"), callback_data: "no_alert"},
+  #         {text: t(".repo"), url: "https://github.com/telegram-bot-rb/telegram-bot"}
+  #       ]
+  #     ]
+  #   }
+  # end
 
   def callback_query(data)
     if data == "alert"

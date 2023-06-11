@@ -1,7 +1,7 @@
 # For more information regarding these settings check out our docs https://docs.avohq.io
 Avo.configure do |config|
   ## == Routing ==
-  config.root_path = '/avo'
+  config.root_path = '/admin'
 
   # Where should the user be redirected when visting the `/avo` url
   # config.home_path = nil
@@ -17,6 +17,7 @@ Avo.configure do |config|
 
   ## == Authentication ==
   # config.current_user_method = {}
+  config.current_user_method = :current_user
   # config.authenticate_with = {}
 
   ## == Authorization ==
@@ -33,10 +34,10 @@ Avo.configure do |config|
   config.authorization_client = :pundit
 
   ## == Localization ==
-  # config.locale = 'en-US'
+  config.locale = :fr
 
   ## == Resource options ==
-  # config.resource_controls_placement = :right
+  config.resource_controls_placement = :left
   # config.model_resource_mapping = {}
   # config.default_view_type = :table
   # config.per_page = 24
@@ -48,7 +49,7 @@ Avo.configure do |config|
   ## == Customization ==
   # config.app_name = 'Avocadelicious'
   # config.timezone = 'UTC'
-  # config.currency = 'USD'
+  config.currency = 'EUR'
   # config.hide_layout_when_printing = false
   # config.full_width_container = false
   # config.full_width_index_view = false
@@ -83,19 +84,29 @@ Avo.configure do |config|
   # end
 
   ## == Menus ==
-  # config.main_menu = -> {
-  #   section "Dashboards", icon: "dashboards" do
-  #     all_dashboards
-  #   end
+  config.main_menu = -> {
+    section "Dashboards", icon: "dashboards" do
+      all_dashboards
+    end
 
-  #   section "Resources", icon: "resources" do
-  #     all_resources
-  #   end
+    section "Administration", icon: "resources" do
 
-  #   section "Tools", icon: "tools" do
-  #     all_tools
-  #   end
-  # }
+    end
+
+    section "Animation", icon: "resources" do
+      resource :org , label: "Organisations", visible: -> do
+        current_user.admin?
+      end
+      resource :artist, label: "Artistes"
+      resource :protocol, label: "Protocoles"
+      resource :events, label: "Événements"
+      resource :bot_broadcasts, label: "Diffusions Chatbot"
+    end
+
+    section "Tools", icon: "tools" do
+      all_tools
+    end
+  }
   # config.profile_menu = -> {
   #   link "Profile", path: "/avo/profile", icon: "user-circle"
   # }
