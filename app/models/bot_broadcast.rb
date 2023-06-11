@@ -44,6 +44,10 @@ class BotBroadcast < ApplicationRecord
   scope :inclusive_overlaps, -> (bot_broadcast) { excluding(bot_broadcast).where("start_at >= ? AND end_at <= ?", bot_broadcast.start_at, bot_broadcast.end_at) }
   scope :active, -> { where("? BETWEEN start_at AND end_AT", Time.current).limit(1) }
 
+  def sanitized_intro
+    Sanitize.fragment(intro, Sanitize::Config::TELEGRAM)
+  end
+
   private
 
   def not_overlapping

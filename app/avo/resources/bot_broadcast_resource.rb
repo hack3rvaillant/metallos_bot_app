@@ -1,5 +1,5 @@
 class BotBroadcastResource < Avo::BaseResource
-  self.title = :intro
+  self.title = :sanitized_intro
   self.includes = [:protocol]
   # self.search_query = -> do
   #   scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)

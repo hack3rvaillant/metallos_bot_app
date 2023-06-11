@@ -1,77 +1,43 @@
 class TelegramWebhooksController < Telegram::Bot::UpdatesController
   include Telegram::Bot::UpdatesController::MessageContext
+  before_action :set_current_bot_broadcast, only: [:start!, :current_protocol, :callback_query]
 
   def start!(*)
-    active_bot_broadcast = Org.find_by(name: "Maison des Métallos").active_bot_broadcast # TODO, make the org selection dynamic
     respond_with :message, text: t(".greetings")
     respond_with :message, text: t(".what_we_do")
-    if active_bot_broadcast
-      respond_with :message, text: t(".current_protocol")
+    if @active_bot_broadcast
       respond_with :message, text: t(".your_turn")
-      respond_with :message, text: Sanitize.fragment(active_bot_broadcast.intro), parse_mode: "HTML"
-      active_bot_broadcast.thumbnail.open do |file|
-        respond_with :photo, photo: file
-      end
-      respond_with :message, text: Sanitize.fragment(active_bot_broadcast.steps), parse_mode: "HTML"
-      respond_with :message, text: Sanitize.fragment(active_bot_broadcast.outro), parse_mode: "HTML"
-      respond_with :message, text: t(".join_group_chat", url: active_bot_broadcast.telegram_conversation_url)
+      respond_with :photo, photo: File.open(Rails.root.join("app/assets/images/steps.png"))
+      respond_with :message, text: t(".current_protocol"), reply_markup: {
+        inline_keyboard: [[
+          {text: t(".see_current"), callback_data: 'current_protocol'}
+        ]]
+      }
+
+      # respond_with :message, text: t(".join_group_chat", url: active_bot_broadcast.telegram_conversation_url)
     else
+      respond_with :message, text: t(".no_current_protocol")
     end
+  end
+
+  def current_protocol
+    @active_bot_broadcast.thumbnail.open do |file|
+      respond_with :photo, photo: file
+    end
+    respond_with :message, text: Sanitize.fragment(@active_bot_broadcast.intro, Sanitize::Config::TELEGRAM), parse_mode: "HTML"
+    respond_with :message, text: Sanitize.fragment(@active_bot_broadcast.steps, Sanitize::Config::TELEGRAM), parse_mode: "HTML"
+    respond_with :message, text: Sanitize.fragment(@active_bot_broadcast.outro, Sanitize::Config::TELEGRAM), parse_mode: "HTML"
   end
 
   def stop!
     bot.close
   end
 
-  # def help!(*)
-  #   respond_with :message, text: t(".content")
-  # end
-
-  # def memo!(*args)
-  #   if args.any?
-  #     session[:memo] = args.join(" ")
-  #     respond_with :message, text: t(".notice")
-  #   else
-  #     respond_with :message, text: t(".prompt")
-  #     save_context :memo!
-  #   end
-  # end
-
-  # def remind_me!(*)
-  #   to_remind = session.delete(:memo)
-  #   reply = to_remind || t(".nothing")
-  #   respond_with :message, text: reply
-  # end
-
-  # def keyboard!(value = nil, *)
-  #   if value
-  #     respond_with :message, text: t(".selected", value: value)
-  #   else
-  #     save_context :keyboard!
-  #     respond_with :message, text: t(".prompt"), reply_markup: {
-  #       keyboard: [t(".buttons")],
-  #       resize_keyboard: true,
-  #       one_time_keyboard: true,
-  #       selective: true
-  #     }
-  #   end
-  # end
-
-  # def inline_keyboard!(*)
-  #   respond_with :message, text: t(".prompt"), reply_markup: {
-  #     inline_keyboard: [
-  #       [
-  #         {text: t(".alert"), callback_data: "alert"},
-  #         {text: t(".no_alert"), callback_data: "no_alert"},
-  #         {text: t(".repo"), url: "https://github.com/telegram-bot-rb/telegram-bot"}
-  #       ]
-  #     ]
-  #   }
-  # end
-
   def callback_query(data)
     if data == "alert"
       answer_callback_query t(".alert"), show_alert: true
+    elsif data == "current_protocol"
+      current_protocol
     else
       answer_callback_query t(".no_alert")
     end
@@ -119,5 +85,9 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
       respond_with :message,
         text: t("telegram_webhooks.action_missing.command", command: action_options[:command])
     end
+  end
+
+  def set_current_bot_broadcast
+    @active_bot_broadcast = Org.find_by(name: "Maison des Métallos").active_bot_broadcast # TODO, make the org selection dynamic
   end
 end

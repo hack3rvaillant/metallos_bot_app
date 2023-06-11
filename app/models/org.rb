@@ -17,6 +17,6 @@ class Org < ApplicationRecord
   has_many :bot_broadcasts, through: :protocols
 
   def active_bot_broadcast
-    BotBroadcast.joins(:protocol).where("protocols.org_id = ?", id).first
+    BotBroadcast.joins(:protocol).where("protocols.org_id = ? AND ? BETWEEN start_at AND end_at", id, Time.current).first
   end
 end
