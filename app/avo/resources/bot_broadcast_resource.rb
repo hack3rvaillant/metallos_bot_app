@@ -9,12 +9,18 @@ class BotBroadcastResource < Avo::BaseResource
   field :start_at, as: :date_time, name: "début de la diffusion", sortable: true
   field :end_at, as: :date_time, name: "fin de la diffusion"
   field :protocol, as: :belongs_to
-  field :thumbnail, name:"vignette", as: :file, link_to_resource: true, accept: "image/*"
+  field :thumbnail, name:"vignette", as: :file, link_to_resource: true, accept: "image/*", hide_on: [:index]
   field :intro, as: :trix
-  field :steps, as: :trix
-  field :outro, as: :trix
-  field :cta, as: :text
-  field :telegram_conversation_url, as: :text
+  field :actif, only_on: [:index], as: :text do |bb|
+    now = Time.current
+    next "🚀" if now >= bb.start_at && now <= bb.end_at
+    next "📅" if now < bb.start_at
+    next "🛑" if now > bb.end_at
+  end
+  field :steps, as: :trix, hide_on: [:index]
+  field :outro, as: :trix, hide_on: [:index]
+  field :cta, as: :text, hide_on: [:index]
+  field :telegram_conversation_url, as: :text, hide_on: [:index]
   # add fields here
 
   grid do
@@ -22,6 +28,6 @@ class BotBroadcastResource < Avo::BaseResource
     title :protocol_punchline, as: :text do |broadcast|
       broadcast.protocol.punchline
     end
-    body :intro, as: :text, as_html: true
+    body :sanitized_intro, as: :text, as_html: true
   end
 end

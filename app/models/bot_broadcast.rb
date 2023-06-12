@@ -3,6 +3,7 @@
 # Table name: bot_broadcasts
 #
 #  id                        :bigint           not null, primary key
+#  broadcasted_at            :datetime
 #  cta                       :string
 #  end_at                    :datetime
 #  intro                     :text
@@ -42,11 +43,16 @@ class BotBroadcast < ApplicationRecord
   scope :end_overlaps, -> (bot_broadcast) { excluding(bot_broadcast).where("end_at BETWEEN ? AND ?", bot_broadcast.start_at, bot_broadcast.end_at) }
   scope :covering_overlaps, -> (bot_broadcast) { excluding(bot_broadcast).where("start_at <= ? AND end_at >= ?", bot_broadcast.start_at, bot_broadcast.end_at) }
   scope :inclusive_overlaps, -> (bot_broadcast) { excluding(bot_broadcast).where("start_at >= ? AND end_at <= ?", bot_broadcast.start_at, bot_broadcast.end_at) }
-  scope :active, -> { where("? BETWEEN start_at AND end_AT", Time.current).limit(1) }
 
-  def sanitized_intro
-    Sanitize.fragment(intro, Sanitize::Config::TELEGRAM)
+  def self.sanitized_list(list)
+    list.each do |name|
+      define_method("sanitized_#{name}".to_sym) do
+        Sanitize.fragment(self.send(name), Sanitize::Config::TELEGRAM)
+      end
+    end
   end
+
+  sanitized_list [:intro, :outro, :steps]
 
   private
 

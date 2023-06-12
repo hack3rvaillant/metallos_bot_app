@@ -57,6 +57,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_09_221232) do
     t.string "telegram_conversation_url"
     t.datetime "start_at"
     t.datetime "end_at"
+    t.datetime "broadcasted_at"
     t.bigint "protocol_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

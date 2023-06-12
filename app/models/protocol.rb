@@ -55,6 +55,9 @@ class Protocol < ApplicationRecord
   accepts_nested_attributes_for :events
   accepts_nested_attributes_for :bot_broadcasts
 
+  # Scopes
+  scope :cleared, -> { where(copyright_cleared: true) }
+
   enum :status, {"draft": "draft", "ready_to_review": "ready_to_review", "published": "published"}
   enum :participation_mode, PARTICIPATION_MODES
   enum :duration, DURATIONS

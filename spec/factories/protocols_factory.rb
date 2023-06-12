@@ -8,5 +8,8 @@ FactoryBot.define do
     status { :draft }
     artist
     org
+    trait :cleared do
+      copyright_cleared { true }
+    end
   end
 end

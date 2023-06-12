@@ -69,15 +69,30 @@ RSpec.describe Protocol, type: :model do
     end
   end
 
-  context "Associations" do
+  describe "Associations" do
     it { should belong_to(:artist) }
     it { should belong_to(:org) }
     it { should have_many(:bot_broadcasts) }
     it { should have_many(:events) }
   end
 
-  context "Nested Attributes" do
+  describe "Nested Attributes" do
     it { should accept_nested_attributes_for(:events) }
     it { should accept_nested_attributes_for(:bot_broadcasts) }
+  end
+
+  describe "Scopes" do
+    describe ".cleared" do
+      subject { described_class.cleared }
+
+      context "when some protocols are cleared and some aren't" do
+        let(:copyright_cleared_protocols) { create_list(:protocol, 3, :cleared) }
+        let!(:other_protocols) { create_list(:protocol, 3) }
+
+        it "returns only the cleared ones" do
+          is_expected.to eq copyright_cleared_protocols
+        end
+      end
+    end
   end
 end

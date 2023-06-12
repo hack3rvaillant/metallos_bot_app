@@ -8,5 +8,9 @@ FactoryBot.define do
     end_at { 2.days.from_now }
     telegram_conversation_url {"https://tlgrm.com/srantkwa"}
     protocol
+
+    trait :broadcasted do
+      broadcasted_at { 1.hour.ago }
+    end
   end
 end

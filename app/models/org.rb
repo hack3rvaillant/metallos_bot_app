@@ -19,4 +19,8 @@ class Org < ApplicationRecord
   def active_bot_broadcast
     BotBroadcast.joins(:protocol).where("protocols.org_id = ? AND ? BETWEEN start_at AND end_at", id, Time.current).first
   end
+
+  def ready_to_broadcast_bot_broadcast
+    active_bot_broadcast.broadcasted_at.nil? ? active_bot_broadcast : nil
+  end
 end

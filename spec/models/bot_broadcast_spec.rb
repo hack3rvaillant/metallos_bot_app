@@ -3,6 +3,7 @@
 # Table name: bot_broadcasts
 #
 #  id                        :bigint           not null, primary key
+#  broadcasted_at            :datetime
 #  cta                       :string
 #  end_at                    :datetime
 #  intro                     :text

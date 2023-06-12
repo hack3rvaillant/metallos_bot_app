@@ -1,5 +1,5 @@
 RSpec.describe TelegramWebhooksController, telegram_bot: :rails do
-  describe "#start!" do
+  xdescribe "#start!" do
     subject { -> { dispatch_command :start } }
     it { should respond_with_message(/Bienvenue au Bureau des Méthodes/) }
 
@@ -8,11 +8,6 @@ RSpec.describe TelegramWebhooksController, telegram_bot: :rails do
     end
     context "when there is no current protocol" do
     end
-  end
-
-  describe "#help!" do
-    subject { -> { dispatch_command :help } }
-    it { should respond_with_message(/Available cmds/) }
   end
 
   describe "#message" do

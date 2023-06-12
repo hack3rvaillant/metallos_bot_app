@@ -8,6 +8,7 @@ class CreateBotBroadcasts < ActiveRecord::Migration[7.0]
       t.string :telegram_conversation_url
       t.datetime :start_at
       t.datetime :end_at
+      t.datetime :broadcasted_at
       t.references :protocol, null: false, foreign_key: true
 
       t.timestamps

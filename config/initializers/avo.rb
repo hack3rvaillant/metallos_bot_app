@@ -85,18 +85,11 @@ Avo.configure do |config|
 
   ## == Menus ==
   config.main_menu = -> {
-    section "Dashboards", icon: "dashboards" do
-      all_dashboards
-    end
-
-    section "Administration", icon: "resources" do
-
+    section "Administration", icon: "resources", visible: -> { current_user.admin? } do
+      resource :org , label: "Organisations"
     end
 
     section "Animation", icon: "resources" do
-      resource :org , label: "Organisations", visible: -> do
-        current_user.admin?
-      end
       resource :artist, label: "Artistes"
       resource :protocol, label: "Protocoles"
       resource :events, label: "Événements"
