@@ -1,6 +1,7 @@
 class TelegramWebhooksController < Telegram::Bot::UpdatesController
   include Telegram::Bot::UpdatesController::MessageContext
   before_action :set_current_bot_broadcast, only: [:start!, :current_protocol, :callback_query]
+  before_action :set_conversation, only: [:start!, :current_protocol, :callback_query]
 
   def start!(*)
     respond_with :message, text: t(".greetings")
@@ -89,5 +90,10 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
 
   def set_current_bot_broadcast
     @active_bot_broadcast = Org.find_by(name: "Maison des Métallos").active_bot_broadcast # TODO, make the org selection dynamic
+  end
+
+  def set_conversation
+    chat_id = self.chat && self.chat["id"]
+    @conversation = Conversation.find_or_create_by(chat_id: chat_id) # TODO, make them belong to an organisation
   end
 end
