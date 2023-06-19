@@ -40,3 +40,5 @@ config/secrets.yml
 
 /config/credentials/*.key
 ngrok.yml
+
+/config/credentials/production.key
