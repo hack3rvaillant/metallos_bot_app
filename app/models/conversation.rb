@@ -11,4 +11,5 @@
 class Conversation < ApplicationRecord
   # Validations
   validates :chat_id, presence: true
+  # TODO, make them belong to an organisation
 end

@@ -39,3 +39,4 @@ config/secrets.yml
 .DS_Store
 
 /config/credentials/*.key
+ngrok.yml

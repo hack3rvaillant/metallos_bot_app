@@ -24,5 +24,6 @@ module TelegramBotApp
     config.time_zone = "Europe/Paris"
     config.i18n.default_locale = :fr
     # config.eager_load_paths << Rails.root.join("extras")
+    config.hosts << ENV["NGROK_HOST"] if ENV["NGROK_HOST"]
   end
 end
