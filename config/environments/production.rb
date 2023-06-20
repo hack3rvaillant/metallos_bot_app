@@ -97,4 +97,6 @@ Rails.application.configure do
   # Configure session store for telegram bot.
   config.telegram_updates_controller.session_store = :file_store,
     Rails.root.join('tmp', 'session_store')
+
+  routes.default_url_options = {host: 'bot-metallos-prod.osc-fr1.scalingo.io', protocol: 'https'} # https is necessary!
 end
