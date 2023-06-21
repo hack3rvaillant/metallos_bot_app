@@ -80,4 +80,5 @@ fr:
       current_protocol: "Un protocole est actuellement en cours"
       no_current_protocol: "Un protocole vous sera envoyé dans les prochains jours"
       join_group_chat: "Rejoignez la conversation %{url}"
-      see_current: "Voir le protocol en cours"
+      see_current: "Voir le protocol"
+      todo_before: "<i>À faire avant le %{date}</i>"

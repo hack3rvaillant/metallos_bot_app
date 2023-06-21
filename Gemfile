@@ -105,3 +105,5 @@ gem "devise", "~> 4.9"
 gem "devise-tailwinded"
 gem "pundit", "~> 2.3"
 gem 'avo', "~> 2.34"#, github: "avo-hq/avo", branch: "main"
+
+gem "cloudinary", "~> 1.26"

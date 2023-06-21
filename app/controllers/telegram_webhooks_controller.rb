@@ -9,11 +9,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     if @active_bot_broadcast
       respond_with :message, text: t(".your_turn")
       respond_with :photo, photo: File.open(Rails.root.join("app/assets/images/steps.png"))
-      respond_with :message, text: t(".current_protocol"), reply_markup: {
-        inline_keyboard: [[
-          {text: t(".see_current"), callback_data: 'current_protocol'}
-        ]]
-      }
+      current_protocol
 
       # respond_with :message, text: t(".join_group_chat", url: active_bot_broadcast.telegram_conversation_url)
     else
@@ -22,13 +18,19 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
   end
 
   def current_protocol
-    respond_with :message, text: "🔔 <b>Protocole n°#{@active_bot_broadcast.protocol.position} — du #{@active_bot_broadcast.start_at} au #{@active_bot_broadcast.end_at}</b>", parse_mode: "HTML"
-
+    respond_with :message, text: "🔔 <b>Protocole n°#{@active_bot_broadcast.protocol.position} — du #{@active_bot_broadcast.start_at.strftime()} au #{@active_bot_broadcast.end_at}</b>", parse_mode: "HTML"
+    respond_with :message, text: Sanitize.fragment(@active_bot_broadcast.intro, Sanitize::Config::TELEGRAM), parse_mode: "HTML"
+    respond_with :message, text: t(".current_protocol"), reply_markup: {
+      inline_keyboard: [[
+        {text: t(".see_current"), callback_data: 'current_protocol'}
+      ]]
+    }
     @active_bot_broadcast.thumbnail.open do |file|
       respond_with :photo, photo: file
     end
-    respond_with :message, text: Sanitize.fragment(@active_bot_broadcast.intro, Sanitize::Config::TELEGRAM), parse_mode: "HTML"
     respond_with :message, text: Sanitize.fragment(@active_bot_broadcast.steps, Sanitize::Config::TELEGRAM), parse_mode: "HTML"
+    respond_with :message, text: t(".todo_before", date: @active_bot_broadcast.end_at.strftime("%d %B %Y"))
+
     respond_with :message, text: Sanitize.fragment(@active_bot_broadcast.outro, Sanitize::Config::TELEGRAM), parse_mode: "HTML"
   end
 
