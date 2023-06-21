@@ -8,12 +8,13 @@
 #  copyright_cleared  :boolean          default(FALSE)
 #  creation_year      :integer
 #  duration           :string
+#  equipment          :string
 #  internal_notes     :text
 #  official_title     :string
 #  participation_mode :string
 #  position           :integer
-#  props_needed       :text
 #  punchline          :string
+#  space              :string
 #  status             :string           default("draft")
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
@@ -34,6 +35,7 @@ class Protocol < ApplicationRecord
   STATUSES = I18n.t("models.protocol.statuses", locale: :en)
   PARTICIPATION_MODES = I18n.t("models.protocol.participation_modes", locale: :en)
   DURATIONS = I18n.t("models.protocol.durations", locale: :en)
+  SPACES = I18n.t("models.protocol.spaces", locale: :en)
 
   # Validations
   validates :punchline, presence: true
@@ -43,6 +45,7 @@ class Protocol < ApplicationRecord
   validates :status, inclusion: STATUSES.values
   validates :participation_mode, presence: true
   validates :participation_mode, inclusion: PARTICIPATION_MODES.values
+  validates :space, inclusion: SPACES.values
   validates :duration, inclusion: { in: DURATIONS.values, allow_blank: true }
   validate :publish_only_cleared
 

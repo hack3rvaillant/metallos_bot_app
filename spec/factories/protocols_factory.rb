@@ -6,6 +6,7 @@ FactoryBot.define do
     participation_mode { :solo }
     punchline { "In enim justo rhoncus ut" }
     status { :draft }
+    space { :at_home }
     artist
     org
     trait :cleared do

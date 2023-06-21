@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_21_203927) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_21_233350) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -99,7 +99,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_21_203927) do
     t.text "content"
     t.text "about"
     t.string "participation_mode"
-    t.text "props_needed"
     t.boolean "copyright_cleared", default: false
     t.string "duration"
     t.text "internal_notes"
@@ -107,6 +106,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_21_203927) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "position"
+    t.string "space"
+    t.string "equipment"
     t.index ["artist_id"], name: "index_protocols_on_artist_id"
     t.index ["org_id"], name: "index_protocols_on_org_id"
   end

@@ -12,3 +12,12 @@ en:
         a_few_minutes: "a_few_minutes"
         a_few_hours: "a_few_hours"
         a_few_days: "a_few_days"
+      spaces:
+        at_home: at_home
+        outdoor: outdoor
+        somewhere_precise: somewhere_precise
+        anywhere: anywhere
+      equipment:
+        none: none
+        daily: daily
+        specific: specific

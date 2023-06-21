@@ -8,12 +8,13 @@
 #  copyright_cleared  :boolean          default(FALSE)
 #  creation_year      :integer
 #  duration           :string
+#  equipment          :string
 #  internal_notes     :text
 #  official_title     :string
 #  participation_mode :string
 #  position           :integer
-#  props_needed       :text
 #  punchline          :string
+#  space              :string
 #  status             :string           default("draft")
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null

@@ -24,7 +24,8 @@ class ProtocolResource < Avo::BaseResource
     info: "solo",
     success: "multi"
   }
-  field :props_needed, as: :trix, name: "Matériel nécessaire"
+  field :space, as: :select, name: "Lieu", options: I18n.t("models.protocol.spaces").invert
+  field :equiment, as: :select, name: "Matériel nécessaire", options: I18n.t("models.protocol.equipment").invert
   field :duration, name: "durée indicative", as: :select, options: I18n.t("models.protocol.durations").invert
   field :copyright_cleared, as: :boolean, name: "Droits d'auteur négociés"
   field :internal_notes, as: :trix, name: "Notes internes"
