@@ -8,7 +8,7 @@ class BotBroadcastResource < Avo::BaseResource
   # Fields generated from the model
   field :start_at, as: :date_time, name: "début de la diffusion", sortable: true
   field :end_at, as: :date_time, name: "fin de la diffusion"
-  field :protocol, as: :belongs_to
+  field :protocol, as: :belongs_to, name: "protocole"
   field :thumbnail, name:"vignette", as: :file, link_to_resource: true, accept: "image/*", hide_on: [:index]
   field :intro, as: :trix
   field :actif, only_on: [:index], as: :text do |bb|
@@ -17,10 +17,10 @@ class BotBroadcastResource < Avo::BaseResource
     next "📅" if now < bb.start_at
     next "🛑" if now > bb.end_at
   end
-  field :steps, as: :trix, hide_on: [:index]
+  field :steps, as: :trix, hide_on: [:index], name: "instructions"
   field :outro, as: :trix, hide_on: [:index]
   field :cta, as: :text, hide_on: [:index]
-  field :telegram_conversation_url, as: :text, hide_on: [:index]
+  field :telegram_conversation_url, as: :text, hide_on: [:index], name: "url de conversation Telegram"
   # add fields here
 
   grid do

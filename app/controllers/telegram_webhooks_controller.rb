@@ -33,7 +33,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     end
     respond_with :message, text: Sanitize.fragment(@active_bot_broadcast.steps, Sanitize::Config::TELEGRAM), parse_mode: "HTML"
 
-    respond_with :message, text: t(".todo_before", date: @active_bot_broadcast.end_at.strftime("%d %B"), reply_markup: {
+    respond_with :message, text: t(".todo_before", date: @active_bot_broadcast.end_at.strftime("%d %B")), reply_markup: {
       inline_keyboard: [[
         {text: t(".share_button"), callback_data: 'current_protocol_outro'}
       ]]

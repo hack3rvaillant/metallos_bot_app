@@ -5,7 +5,7 @@ class ArtistResource < Avo::BaseResource
   #   scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
   # end
 
-  field :name, as: :text, link_to_resource: true
+  field :name, as: :text, link_to_resource: true, name: "nom"
   field :description, as: :trix
   field :protocols, as: :has_many
 end
