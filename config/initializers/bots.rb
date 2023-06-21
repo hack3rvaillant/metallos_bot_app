@@ -1,1 +1,1 @@
-Telegram.bots_config = Rails.application.credentials.telegram.bot
+Telegram.bots_config = Rails.application.credentials.telegram.bots
