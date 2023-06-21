@@ -1,10 +1,10 @@
 # For more information regarding these settings check out our docs https://docs.avohq.io
 Avo.configure do |config|
   ## == Routing ==
-  config.root_path = '/admin'
+  config.root_path = '/'
 
   # Where should the user be redirected when visting the `/avo` url
-  # config.home_path = nil
+  config.home_path = '/admin/resources/artists'
 
   ## == Licensing ==
   config.license = 'community' # change this to 'pro' when you add the license key
