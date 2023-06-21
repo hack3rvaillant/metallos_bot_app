@@ -22,6 +22,8 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
   end
 
   def current_protocol
+    respond_with :message, text: "🔔 <b>Protocole n°#{@active_bot_broadcast.protocol.position} — du #{@active_bot_broadcast.start_at} au #{@active_bot_broadcast.end_at}</b>", parse_mode: "HTML"
+
     @active_bot_broadcast.thumbnail.open do |file|
       respond_with :photo, photo: file
     end

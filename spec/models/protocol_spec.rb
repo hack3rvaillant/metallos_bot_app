@@ -11,6 +11,7 @@
 #  internal_notes     :text
 #  official_title     :string
 #  participation_mode :string
+#  position           :integer
 #  props_needed       :text
 #  punchline          :string
 #  status             :string           default("draft")
