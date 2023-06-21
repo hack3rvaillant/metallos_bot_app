@@ -9,7 +9,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     if @active_bot_broadcast
       respond_with :message, text: t(".your_turn")
       respond_with :photo, photo: File.open(Rails.root.join("app/assets/images/steps.png"))
-      current_protocol
+      intro_current_protocol!
 
       # respond_with :message, text: t(".join_group_chat", url: active_bot_broadcast.telegram_conversation_url)
     else
@@ -17,7 +17,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     end
   end
 
-  def current_protocol
+  def current_protocol_intro!
     respond_with :message, text: "🔔 <b>Protocole n°#{@active_bot_broadcast.protocol.position} — du #{@active_bot_broadcast.start_at.strftime()} au #{@active_bot_broadcast.end_at}</b>", parse_mode: "HTML"
     respond_with :message, text: Sanitize.fragment(@active_bot_broadcast.intro, Sanitize::Config::TELEGRAM), parse_mode: "HTML"
     respond_with :message, text: t(".current_protocol"), reply_markup: {
@@ -25,13 +25,27 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
         {text: t(".see_current"), callback_data: 'current_protocol'}
       ]]
     }
-    @active_bot_broadcast.thumbnail.open do |file|
+  end
+
+  def current_protocol!
+    @active_bot_broadcast.thumbnail do |file|
       respond_with :photo, photo: file
     end
     respond_with :message, text: Sanitize.fragment(@active_bot_broadcast.steps, Sanitize::Config::TELEGRAM), parse_mode: "HTML"
-    respond_with :message, text: t(".todo_before", date: @active_bot_broadcast.end_at.strftime("%d %B %Y"))
 
+    respond_with :message, text: t(".todo_before", date: @active_bot_broadcast.end_at.strftime("%d %B"), reply_markup: {
+      inline_keyboard: [[
+        {text: t(".share_button"), callback_data: 'current_protocol_outro'}
+      ]]
+    }
+  end
+
+  def current_protocol_outro!
     respond_with :message, text: Sanitize.fragment(@active_bot_broadcast.outro, Sanitize::Config::TELEGRAM), parse_mode: "HTML"
+    respond_with :message, text: "👉 #{@active_bot_broadcast.telegram_conversation_url}", parse_mode: "HTML"
+    sleep 5
+    respond_with :message, text: t(".do_not_forget")
+    respond_with :message, text: "@BureauDesMethodesBot"  
   end
 
   def stop!

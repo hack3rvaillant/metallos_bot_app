@@ -82,3 +82,7 @@ fr:
       join_group_chat: "Rejoignez la conversation %{url}"
       see_current: "Voir le protocol"
       todo_before: "<i>À faire avant le %{date}</i>"
+    current_protocol:
+      share_button: Partagez votre liste et vos impressions
+    current_protocol_outro:
+      do_not_forget: Et n’oubliez pas de parler du bureau autour de vous
