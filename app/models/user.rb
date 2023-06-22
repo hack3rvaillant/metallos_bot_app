@@ -35,6 +35,8 @@
 #  fk_rails_...  (org_id => orgs.id)
 #
 class User < ApplicationRecord
+  attr_accessor :skip_password_validation
+
   ADMIN_EMAILS = %w[
     hello@hacker-vaillant.org
     kevin.echraghi@heretique.fr
@@ -53,5 +55,12 @@ class User < ApplicationRecord
 
   def admin?
     ADMIN_EMAILS.include?(email)
+  end
+
+  protected
+
+  def password_required?
+    return false if skip_password_validation
+    super
   end
 end
