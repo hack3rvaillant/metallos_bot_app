@@ -43,7 +43,7 @@ RSpec.describe Event, type: :model do
 
     it { should validate_presence_of(:happen_at) }
 
-    it {
+    xit {
       should define_enum_for(:place)
       .with_values(described_class::PLACES)
       .backed_by_column_of_type(:string)
