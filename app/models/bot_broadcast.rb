@@ -28,7 +28,7 @@ class BotBroadcast < ApplicationRecord
   belongs_to :protocol
   has_one_attached :thumbnail
 
-  #Validations
+  # Validations
   validates :intro, presence: true
   validates :steps, presence: true
   validates :outro, presence: true
@@ -39,15 +39,15 @@ class BotBroadcast < ApplicationRecord
   validate :not_overlapping
 
   # Scopes
-  scope :start_overlaps, -> (bot_broadcast) { excluding(bot_broadcast).where("start_at BETWEEN ? AND ?", bot_broadcast.start_at, bot_broadcast.end_at) }
-  scope :end_overlaps, -> (bot_broadcast) { excluding(bot_broadcast).where("end_at BETWEEN ? AND ?", bot_broadcast.start_at, bot_broadcast.end_at) }
-  scope :covering_overlaps, -> (bot_broadcast) { excluding(bot_broadcast).where("start_at <= ? AND end_at >= ?", bot_broadcast.start_at, bot_broadcast.end_at) }
-  scope :inclusive_overlaps, -> (bot_broadcast) { excluding(bot_broadcast).where("start_at >= ? AND end_at <= ?", bot_broadcast.start_at, bot_broadcast.end_at) }
+  scope :start_overlaps, ->(bot_broadcast) { excluding(bot_broadcast).where("start_at BETWEEN ? AND ?", bot_broadcast.start_at, bot_broadcast.end_at) }
+  scope :end_overlaps, ->(bot_broadcast) { excluding(bot_broadcast).where("end_at BETWEEN ? AND ?", bot_broadcast.start_at, bot_broadcast.end_at) }
+  scope :covering_overlaps, ->(bot_broadcast) { excluding(bot_broadcast).where("start_at <= ? AND end_at >= ?", bot_broadcast.start_at, bot_broadcast.end_at) }
+  scope :inclusive_overlaps, ->(bot_broadcast) { excluding(bot_broadcast).where("start_at >= ? AND end_at <= ?", bot_broadcast.start_at, bot_broadcast.end_at) }
 
   def self.sanitized_list(list)
     list.each do |name|
       define_method("sanitized_#{name}".to_sym) do
-        Sanitize.fragment(self.send(name), Sanitize::Config::TELEGRAM)
+        Sanitize.fragment(send(name), Sanitize::Config::TELEGRAM)
       end
     end
   end

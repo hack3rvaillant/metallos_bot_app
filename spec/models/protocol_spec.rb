@@ -50,9 +50,9 @@ RSpec.describe Protocol, type: :model do
     it { should validate_presence_of(:status) }
 
     xit {
-      should define_enum_for(:status).backed_by_column_of_type(:string).with_values({:draft=>"draft",
- :ready_to_review=>"ready_to_review",
- :published=>"published"}) #.with_values(I18n.t("models.protocol.statuses", locale: :en))
+      should define_enum_for(:status).backed_by_column_of_type(:string).with_values({draft: "draft",
+ ready_to_review: "ready_to_review",
+ published: "published"}) # .with_values(I18n.t("models.protocol.statuses", locale: :en))
     }
 
     it {

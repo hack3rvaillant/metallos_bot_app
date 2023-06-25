@@ -1,7 +1,7 @@
 class ProtocolResource < Avo::BaseResource
   self.title = :punchline
   self.includes = []
-  self.translation_key = 'avo.resource_translations.protocol'
+  self.translation_key = "avo.resource_translations.protocol"
   # self.search_query = -> do
   #   scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
   # end
@@ -11,7 +11,7 @@ class ProtocolResource < Avo::BaseResource
     success: "published",
     warning: "ready_to_review"
   }
-  field :position, as: :number, name: "n°", visible: -> (resource:) { context[:user].admin? }
+  field :position, as: :number, name: "n°", visible: ->(resource:) { context[:user].admin? }
   field :punchline, name: "accroche", as: :text, link_to_resource: true
   field :org, as: :belongs_to, name: "Organisation"
   field :artist, as: :belongs_to, name: "Artiste"

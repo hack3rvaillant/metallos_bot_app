@@ -9,7 +9,7 @@ class BotBroadcastResource < Avo::BaseResource
   field :start_at, as: :date_time, name: "début de la diffusion", sortable: true
   field :end_at, as: :date_time, name: "fin de la diffusion"
   field :protocol, as: :belongs_to, name: "protocole"
-  field :thumbnail, name:"vignette", as: :file, link_to_resource: true, accept: "image/*", hide_on: [:index]
+  field :thumbnail, name: "vignette", as: :file, link_to_resource: true, accept: "image/*", hide_on: [:index]
   field :intro, as: :trix
   field :actif, only_on: [:index], as: :text do |bb|
     now = Time.current

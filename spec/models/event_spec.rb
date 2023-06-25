@@ -21,7 +21,7 @@
 #
 #  fk_rails_...  (protocol_id => protocols.id)
 #
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Event, type: :model do
   describe "Validations" do
@@ -45,8 +45,8 @@ RSpec.describe Event, type: :model do
 
     xit {
       should define_enum_for(:place)
-      .with_values(described_class::PLACES)
-      .backed_by_column_of_type(:string)
+        .with_values(described_class::PLACES)
+        .backed_by_column_of_type(:string)
     }
   end
 end

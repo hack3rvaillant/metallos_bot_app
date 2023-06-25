@@ -23,7 +23,7 @@
 #
 #  fk_rails_...  (protocol_id => protocols.id)
 #
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe BotBroadcast, type: :model do
   context "Validations" do
@@ -79,7 +79,7 @@ RSpec.describe BotBroadcast, type: :model do
       context "when bot_broadcast is happening after existing bot_broadcast" do
         let!(:existing_bot_broadcast) { create(:bot_broadcast, start_at: 1.days.from_now, end_at: 2.days.from_now) }
         it "is valid" do
-            expect(subject).to be true
+          expect(subject).to be true
         end
       end
     end

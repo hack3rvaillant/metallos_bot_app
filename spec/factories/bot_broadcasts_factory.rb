@@ -6,7 +6,7 @@ FactoryBot.define do
     cta { "MyString" }
     start_at { Time.current }
     end_at { 2.days.from_now }
-    telegram_conversation_url {"https://tlgrm.com/srantkwa"}
+    telegram_conversation_url { "https://tlgrm.com/srantkwa" }
     protocol
 
     trait :broadcasted do
