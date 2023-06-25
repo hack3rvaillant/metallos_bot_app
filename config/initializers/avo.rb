@@ -1,21 +1,21 @@
 # For more information regarding these settings check out our docs https://docs.avohq.io
 Avo.configure do |config|
   ## == Routing ==
-  config.root_path = '/'
+  config.root_path = "/"
 
   # Where should the user be redirected when visting the `/avo` url
-  config.home_path = '/admin/resources/artists'
+  config.home_path = "/resources/artists"
 
   ## == Licensing ==
-  config.license = 'community' # change this to 'pro' when you add the license key
-  # config.license_key = ENV['AVO_LICENSE_KEY']
+  config.license = "pro" # change this to 'pro' when you add the license key
+  config.license_key = Rails.application.config[:avo][:license_key]
 
   ## == Set the context ==
   config.set_context do
     # Return a context object that gets evaluated in Avo::ApplicationController
     {
       user: _current_user,
-      params: request.params,
+      params: request.params
     }
   end
 
@@ -53,7 +53,7 @@ Avo.configure do |config|
   ## == Customization ==
   # config.app_name = 'Avocadelicious'
   # config.timezone = 'UTC'
-  config.currency = 'EUR'
+  config.currency = "EUR"
   # config.hide_layout_when_printing = false
   # config.full_width_container = false
   # config.full_width_index_view = false
@@ -90,7 +90,7 @@ Avo.configure do |config|
   ## == Menus ==
   config.main_menu = -> {
     section "Administration", icon: "resources", visible: -> { current_user.admin? } do
-      resource :org , label: "Organisations"
+      resource :org, label: "Organisations"
     end
 
     section "Animation", icon: "resources" do
