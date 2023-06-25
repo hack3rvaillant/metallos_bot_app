@@ -1,30 +1,28 @@
 class TelegramWebhooksController < Telegram::Bot::UpdatesController
+  # skip_before_action :authenticate_user!
+
   include Telegram::Bot::UpdatesController::MessageContext
   before_action :set_current_bot_broadcast, only: [:start!, :current_protocol, :callback_query]
   before_action :set_conversation, only: [:start!, :current_protocol, :callback_query]
 
   def start!(*)
-    respond_with :message, text: t(".greetings")
-    respond_with :message, text: t(".what_we_do")
     if @active_bot_broadcast
-      respond_with :message, text: t(".your_turn")
-      respond_with :photo, photo: File.open(Rails.root.join("app/assets/images/steps.png"))
-      intro_current_protocol!
-
-      # respond_with :message, text: t(".join_group_chat", url: active_bot_broadcast.telegram_conversation_url)
+      current_protocol_intro!
     else
       respond_with :message, text: t(".no_current_protocol")
     end
   end
 
   def current_protocol_intro!
-    respond_with :message, text: "🔔 <b>Protocole n°#{@active_bot_broadcast.protocol.position} — du #{@active_bot_broadcast.start_at.strftime()} au #{@active_bot_broadcast.end_at}</b>", parse_mode: "HTML"
-    respond_with :message, text: Sanitize.fragment(@active_bot_broadcast.intro, Sanitize::Config::TELEGRAM), parse_mode: "HTML"
-    respond_with :message, text: t(".current_protocol"), reply_markup: {
-      inline_keyboard: [[
-        {text: t(".see_current"), callback_data: 'current_protocol'}
-      ]]
-    }
+    respond_with :message, text: "🔔 <b>Protocole n°#{@active_bot_broadcast.protocol.position.to_s.rjust(2, "0")} — du #{@active_bot_broadcast.start_at.strftime("%d/%m/%Y")} au #{@active_bot_broadcast.end_at.strftime("%d/%m/%Y")}</b>", parse_mode: "HTML"
+    respond_with :message,
+      text: Sanitize.fragment(@active_bot_broadcast.intro, Sanitize::Config::TELEGRAM),
+      parse_mode: "HTML",
+      reply_markup: {
+        inline_keyboard: [[
+          {text: t(".see_current"), callback_data: "current_protocol"}
+        ]]
+      }
   end
 
   def current_protocol!
@@ -35,7 +33,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
 
     respond_with :message, text: t(".todo_before", date: @active_bot_broadcast.end_at.strftime("%d %B")), reply_markup: {
       inline_keyboard: [[
-        {text: t(".share_button"), callback_data: 'current_protocol_outro'}
+        {text: t(".share_button"), callback_data: "current_protocol_outro"}
       ]]
     }
   end
@@ -45,7 +43,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     respond_with :message, text: "👉 #{@active_bot_broadcast.telegram_conversation_url}", parse_mode: "HTML"
     sleep 5
     respond_with :message, text: t(".do_not_forget")
-    respond_with :message, text: "@BureauDesMethodesBot"  
+    respond_with :message, text: "@BureauDesMethodesBot"
   end
 
   def stop!
@@ -111,7 +109,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
   end
 
   def set_conversation
-    chat_id = self.chat && self.chat["id"]
+    chat_id = chat && chat["id"]
     @conversation = Conversation.find_or_create_by(chat_id: chat_id) # TODO, make them belong to an organisation
   end
 end
