@@ -79,4 +79,5 @@ Rails.application.configure do
   config.telegram_updates_controller.session_store = :memory_store
 
   config.action_mailer.default_url_options = {host: "localhost", port: 3000}
+  routes.default_url_options = {only_path: true} # https is necessary!
 end

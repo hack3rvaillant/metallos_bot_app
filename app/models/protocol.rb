@@ -46,7 +46,7 @@ class Protocol < ApplicationRecord
   validates :participation_mode, presence: true
   validates :participation_mode, inclusion: PARTICIPATION_MODES.values
   validates :space, inclusion: SPACES.values
-  validates :duration, inclusion: { in: DURATIONS.values, allow_blank: true }
+  validates :duration, inclusion: {in: DURATIONS.values, allow_blank: true}
   validate :publish_only_cleared
 
   # Associations
@@ -62,7 +62,7 @@ class Protocol < ApplicationRecord
   # Scopes
   scope :cleared, -> { where(copyright_cleared: true) }
 
-  enum :status, {"draft": "draft", "ready_to_review": "ready_to_review", "published": "published"}
+  enum :status, {draft: "draft", ready_to_review: "ready_to_review", published: "published"}
   enum :participation_mode, PARTICIPATION_MODES
   enum :duration, DURATIONS
 
